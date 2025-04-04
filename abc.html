@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HDIMS - Health Data Entry</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Toggle Mode -->
+  <button class="mode-toggle" onclick="toggleMode()">🌙 Toggle Mode</button>
+
+  <!-- Welcome Screen -->
+  <div id="welcomeScreen" class="screen">
+    <img src="https://cdn-icons-png.flaticon.com/512/3209/3209265.png" alt="HDIMS Logo" class="icon" />
+    <h1>🩺 HDIMS</h1>
+    <p>Health Data Information & Management System</p>
+    <input type="text" id="usernameInput" placeholder="Enter Username" required />
+    <button onclick="showOptions()">Next</button>
+  </div>
+
+  <!-- Options Screen -->
+  <div id="optionsScreen" class="screen hidden">
+    <h2>Select an Option</h2>
+    <button onclick="showForm()">🏥 Hospital Data Entry</button>
+    <button onclick="showAdmin()">👨‍💼 Super Admin View</button>
+    <button onclick="showChat()">💬 Live Chat Support</button>
+    <button onclick="goBack('welcomeScreen')">Back</button>
+  </div>
+
+  <!-- Hospital Data Entry -->
+  <div id="formScreen" class="screen hidden">
+    <h2>🏥 Hospital Data Entry</h2>
+    <form id="dataEntryForm">
+      <div class="progress-bar">
+        <div id="progress" class="progress"></div>
+      </div>
+
+      <div id="facilityInput">
+        <label for="facility">Facility Name:</label>
+        <input type="text" id="facility" required />
+        <button type="button" onclick="showNextInput('districtInput', 25)">Next</button>
+        <button type="button" onclick="startSpeech('facility')">🎤</button>
+      </div>
+
+      <div id="districtInput" class="hidden">
+        <label for="district">District:</label>
+        <input type="text" id="district" required />
+        <button type="button" onclick="showNextInput('patientsInput', 50)">Next</button>
+        <button type="button" onclick="startSpeech('district')">🎤</button>
+      </div>
+
+      <div id="patientsInput" class="hidden">
+        <label for="patients">Patients Treated Today:</label>
+        <input type="number" id="patients" required />
+        <button type="button" onclick="showNextInput('remarksInput', 75)">Next</button>
+        <button type="button" onclick="startSpeech('patients')">🎤</button>
+      </div>
+
+      <div id="remarksInput" class="hidden">
+        <label for="remarks">Remarks:</label>
+        <textarea id="remarks"></textarea>
+        <button type="button" onclick="startSpeech('remarks')">🎤</button>
+
+        <label for="hospitalImage">Upload Hospital Image:</label>
+        <input type="file" id="hospitalImage" accept="image/*" />
+
+        <label for="hospitalQRCode">Hospital Verification QR Code:</label>
+        <div id="qrcode"></div>
+
+        <div class="buttons">
+          <button type="submit" class="submit-btn">Submit Data</button>
+          <button type="reset" class="reset-btn">Reset</button>
+        </div>
+      </div>
+    </form>
+    <button onclick="goBack('optionsScreen')">Back</button>
+  </div>
+
+  <!-- Super Admin View -->
+  <div id="adminScreen" class="screen hidden">
+    <h2>👨‍💼 Super Admin View</h2>
+    <input type="text" id="searchInput" placeholder="Search by Facility/District" onkeyup="filterData()" />
+    <div id="adminData" class="admin-data">
+      <p class="placeholder-text">No data submitted yet.</p>
+    </div>
+    <div id="map" style="height: 300px; width: 90%; margin-top: 20px;"></div>
+    <button onclick="goBack('optionsScreen')">Back</button>
+  </div>
+
+  <!-- Live Chat Support -->
+  <div id="chatScreen" class="screen hidden">
+    <h2>💬 Live Chat Support</h2>
+    <div id="chatContainer"></div>
+    <button onclick="goBack('optionsScreen')">Back</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+  <script src="script.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
+</body>
+</html>
